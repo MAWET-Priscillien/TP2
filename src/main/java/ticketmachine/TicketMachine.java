@@ -64,6 +64,7 @@ public class TicketMachine {
 	 * @throws IllegalArgumentException if amount is not positive
 	 */
 	public void insertMoney(int amount) {
+            if (amount<0) throw new IllegalArgumentException("On ne peut pas insérer un montant négatif");
 		balance = balance + amount;
 	}
 
@@ -73,8 +74,10 @@ public class TicketMachine {
 	 * @return the balance
 	 */
 	public int refund() {
+                int rendu = balance;
 		System.out.println("Je vous rends : " + balance + " centimes");
-		return balance;
+                removeMoney(balance);
+		return rendu;
 	}
 
 	/**
@@ -83,6 +86,11 @@ public class TicketMachine {
 	 * @return vrai si le ticket a été imprimé, faux sinon
 	 */
 	public boolean printTicket() {
+            if (getBalance()<getPrice()){
+                return false;
+            }
+            removeMoney(getPrice());
+            addTotal(getPrice());
 		// Simulate the printing of a ticket.
 		System.out.println("##################");
 		System.out.println("# The BlueJ Line");
@@ -92,4 +100,12 @@ public class TicketMachine {
 		System.out.println();
 		return true;
 	}
+        
+        public void removeMoney(int amount){
+            balance = balance - amount;
+        }
+        
+        public void addTotal(int amount){
+            total = total + amount;
+        }
 }
